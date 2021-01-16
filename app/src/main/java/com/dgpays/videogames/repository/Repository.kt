@@ -72,4 +72,15 @@ constructor(
             emit(State.Error(exception))
         }
     }
+
+    suspend fun getFavoriteVideoGames(): Flow<State<List<VideoGame>>> = flow {
+        emit(State.Loading)
+        try {
+            val cachedFavoriteVideoGames = videoGameDao.getFavoriteVideoGames()
+            emit(State.Success(roomMapper.mapFromEntityList(cachedFavoriteVideoGames)))
+        } catch (exception: Exception) {
+            Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
+            emit(State.Error(exception))
+        }
+    }
 }

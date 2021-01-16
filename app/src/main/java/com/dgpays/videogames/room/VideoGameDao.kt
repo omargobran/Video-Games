@@ -29,6 +29,6 @@ interface VideoGameDao {
     suspend fun getVideoGameById(id: Int): VideoGameEntity
 
     @Query("DELETE FROM video_games")
-    suspend fun deleteTable()
+    suspend fun deleteAll(): Int
 
 }

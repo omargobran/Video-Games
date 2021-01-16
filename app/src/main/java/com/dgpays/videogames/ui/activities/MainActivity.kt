@@ -5,7 +5,12 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.dgpays.videogames.R
 import com.dgpays.videogames.databinding.ActivityMainBinding
 import com.dgpays.videogames.model.VideoGame
 import com.dgpays.videogames.ui.viewmodels.MainViewModel
@@ -24,44 +29,30 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.videoGameDescriptionLiveData.observe(this, Observer {
-            when (it) {
-                is State.Success<VideoGame> -> {
-                    Log.d(Constants.TAG, "onCreate: ${it.data}")
-                }
-                is State.Error -> {
-                    Log.d(Constants.TAG, "onCreate: ${it.exception.message}")
-                }
-                is State.Loading -> {
-                    Log.d(Constants.TAG, "onCreate: LOADING")
-                }
-            }
-        })
+        val navController = findNavController(R.id.fragment_id)
 
-        viewModel.videoGamesLiveData.observe(this, Observer {
-            when (it) {
-                is State.Success<List<VideoGame>> -> {
-                    Log.d(Constants.TAG, "onCreate: ${it.data}")
-                    val id = it.data.get(0).id
-                    val media = it.data.get(0).image
-                    Glide.with(this)
-                        .load(media)
-                        .into(binding.imageView)
-                    viewModel.setStateEvent(MainViewModel.Event.GetGameDescription(id))
-                }
-                is State.Error -> {
-                    Log.d(Constants.TAG, "onCreate: ${it.exception.message}")
-                }
-                is State.Loading -> {
-                    Log.d(Constants.TAG, "onCreate: LOADING")
-                }
-            }
-        })
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.favoritesFragment))
 
-        viewModel.setStateEvent(MainViewModel.Event.GetGamesFromRoom)
-        viewModel.setStateEvent(MainViewModel.Event.GetGamesFromRemote)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.bottomNav.setupWithNavController(navController)
+
+//        viewModel.videoGameDescriptionLiveData.observe(this, Observer {
+//            when (it) {
+//                is State.Success<VideoGame> -> {
+//                    Log.d(Constants.TAG, "onCreate: ${it.data}")
+//                }
+//                is State.Error -> {
+//                    Log.d(Constants.TAG, "onCreate: ${it.exception.message}")
+//                }
+//                is State.Loading -> {
+//                    Log.d(Constants.TAG, "onCreate: LOADING")
+//                }
+//            }
+//        })
+//
+
+//
+//        viewModel.setStateEvent(MainViewModel.Event.GetGamesFromRoom)
+//        viewModel.setStateEvent(MainViewModel.Event.GetGamesFromRemote)
     }
-
-//    class Adapter(videoGames : List<VideoGame>) : RecyclerView.Adapter() {
-//    }
 }
