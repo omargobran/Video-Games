@@ -19,7 +19,7 @@ interface VideoGameDao {
     @Delete
     suspend fun delete(videoGameEntity: VideoGameEntity): Int
 
-    @Query("SELECT * FROM video_games")
+    @Query("SELECT * FROM video_games ORDER BY rating DESC")
     suspend fun getVideoGames(): List<VideoGameEntity>
 
     @Query("SELECT * FROM video_games WHERE favorite LIKE 'true'")

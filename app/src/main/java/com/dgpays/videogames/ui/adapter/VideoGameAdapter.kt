@@ -33,8 +33,4 @@ class VideoGameAdapter constructor(
         return items.size
     }
 
-    fun addItems(videoGames: List<VideoGame>) {
-        items = videoGames
-        notifyDataSetChanged()
-    }
 }

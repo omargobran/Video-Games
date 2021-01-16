@@ -25,16 +25,14 @@ class MainViewModel @ViewModelInject constructor(
         @BindingAdapter("imageUrl")
         @JvmStatic
         fun setImageUrl(imageView: ImageView, url: String) {
-            url.let {
-                val requestOptions = RequestOptions()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
 
-                Glide.with(imageView.context)
-                    .load(url)
-                    .apply(requestOptions)
-                    .into(imageView)
-            }
+            Glide.with(imageView.context)
+                .load(url)
+                .apply(requestOptions)
+                .into(imageView)
         }
     }
 
