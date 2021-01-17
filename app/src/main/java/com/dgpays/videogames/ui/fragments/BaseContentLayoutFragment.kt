@@ -16,7 +16,10 @@ import com.dgpays.videogames.ui.adapter.VideoGameAdapter
 import com.dgpays.videogames.ui.adapter.VideoGamePagerAdapter
 import com.dgpays.videogames.ui.callback.VideoGameCallback
 
-abstract class BaseContentLayoutFragment : BaseFragment(), VideoGameCallback {
+abstract class BaseContentLayoutFragment :
+    BaseFragment(),
+    VideoGameCallback,
+    androidx.appcompat.widget.SearchView.OnQueryTextListener {
 
     private lateinit var videoGameAdapter: VideoGameAdapter
     private lateinit var videoGamePagerAdapter: VideoGamePagerAdapter
@@ -32,6 +35,11 @@ abstract class BaseContentLayoutFragment : BaseFragment(), VideoGameCallback {
         initViewPager()
         initViewPagerDotsIndicator()
         initRecyclerView()
+        initSearchView()
+    }
+
+    private fun initSearchView() {
+        binding.searchView.setOnQueryTextListener(this)
     }
 
     fun setDataToViews(data: List<VideoGame>) {
@@ -95,5 +103,19 @@ abstract class BaseContentLayoutFragment : BaseFragment(), VideoGameCallback {
             getDirectionToDetailFragment(videoGame),
             extras
         )
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (!newText.isNullOrEmpty()) {
+            if (newText.length >= 3) {
+                videoGameAdapter.filter.filter(newText)
+                return true
+            }
+        }
+        return false
     }
 }
