@@ -28,6 +28,6 @@ class VideoGameViewHolder constructor(
     }
 
     override fun onClick(view: View) {
-        callback.onVideoGameSelected(adapterPosition, binding);
+        callback.onVideoGameSelectedFromList(adapterPosition, binding);
     }
 }

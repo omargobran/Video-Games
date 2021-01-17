@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.VideoGames" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.VideoGames" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -11,6 +11,15 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Tab Layout. -->
+        <item name="android:tabWidgetStyle">@style/Theme.VideoGames.TabLayout</item>
         <!-- Customize your theme here. -->
+        <item name="colorControlActivated">?attr/colorPrimaryVariant</item>
+        <item name="tabStyle">@style/Theme.VideoGames.TabLayout</item>
+    </style>
+
+    <style name="Theme.VideoGames.TabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">?attr/colorPrimaryVariant</item>
+        <item name="tabTextColor">?attr/colorPrimary</item>
     </style>
 </resources>

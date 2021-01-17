@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dgpays.videogames.databinding.PagerItemBinding
 import com.dgpays.videogames.model.VideoGame
 import com.dgpays.videogames.ui.adapter.holder.VideoGamePagerViewHolder
+import com.dgpays.videogames.ui.callback.VideoGameCallback
 
-class VideoGamePagerAdapter : RecyclerView.Adapter<VideoGamePagerViewHolder>() {
+class VideoGamePagerAdapter constructor(
+    private val callback: VideoGameCallback,
+) : RecyclerView.Adapter<VideoGamePagerViewHolder>() {
+
     var items: List<VideoGame> = arrayListOf()
         set(value) {
             field = value
@@ -16,7 +20,8 @@ class VideoGamePagerAdapter : RecyclerView.Adapter<VideoGamePagerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoGamePagerViewHolder {
         return VideoGamePagerViewHolder(
-            PagerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            PagerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            callback
         )
     }
 

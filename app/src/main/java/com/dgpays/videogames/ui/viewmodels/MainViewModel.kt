@@ -1,6 +1,9 @@
 package com.dgpays.videogames.ui.viewmodels
 
+import android.graphics.Color
+import android.graphics.ColorFilter
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
@@ -18,10 +21,12 @@ class MainViewModel @ViewModelInject constructor(
         @BindingAdapter("imageUrl")
         @JvmStatic
         fun setImageUrl(imageView: ImageView, url: String) {
-            val circularProgressDrawable = CircularProgressDrawable(imageView.context)
-            circularProgressDrawable.strokeWidth = 5f
-            circularProgressDrawable.centerRadius = 30f
-            circularProgressDrawable.start()
+            val circularProgressDrawable = CircularProgressDrawable(imageView.context).apply {
+                strokeWidth = 7f
+                centerRadius = 30f
+                setColorSchemeColors(R.style.Theme_VideoGames)
+                start()
+            }
 
             val requestOptions = RequestOptions()
                 .placeholder(circularProgressDrawable)
@@ -44,7 +49,7 @@ class MainViewModel @ViewModelInject constructor(
                         R.drawable.ic_outline_star
                     }
                 )
-                setColorFilter(R.color.red)
+                setColorFilter(R.style.Theme_VideoGames)
             }
         }
 

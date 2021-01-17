@@ -3,20 +3,26 @@ package com.dgpays.videogames.ui.fragments
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.renderscript.ScriptGroup
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dgpays.videogames.databinding.ContentLayoutBinding
 import com.dgpays.videogames.databinding.FavoritesFragmentBinding
 import com.dgpays.videogames.databinding.ListItemBinding
+import com.dgpays.videogames.databinding.PagerItemBinding
 import com.dgpays.videogames.model.VideoGame
 import com.dgpays.videogames.ui.adapter.VideoGameAdapter
 import com.dgpays.videogames.ui.adapter.VideoGamePagerAdapter
@@ -29,36 +35,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoritesFragment : Fragment(), VideoGameCallback {
+class FavoritesFragment : BaseContentLayoutFragment() {
 
     private val viewModel: FavoritesViewModel by viewModels()
     private lateinit var binding: FavoritesFragmentBinding
-    private lateinit var videoGameAdapter: VideoGameAdapter
-    private lateinit var videoGamePagerAdapter: VideoGamePagerAdapter
-    private lateinit var progress: Progress
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val animation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
-        } else {
-            Log.d(Constants.TAG, "onCreate: NO Animation :(")
-            TODO("VERSION.SDK_INT < LOLLIPOP")
-        }
-
-        sharedElementEnterTransition = animation
-        sharedElementReturnTransition = animation
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            progress = context as Progress
-        } catch (e: ClassCastException) {
-            throw ClassCastException(context.toString()
-                    + " must implement progress")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,9 +50,6 @@ class FavoritesFragment : Fragment(), VideoGameCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewPager()
-        initViewPagerTabLayout()
-        initRecyclerView()
 
         viewModel.videoGamesLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -98,40 +75,11 @@ class FavoritesFragment : Fragment(), VideoGameCallback {
         viewModel.setStateEvent(FavoritesViewModel.Event.GetFavoriteGames)
     }
 
-    private fun setDataToViews(data: List<VideoGame>) {
-        // Top 3 items (first param inclusive, second param exclusive)
-        videoGamePagerAdapter.items = if (data.size > 2) data.subList(0, 3) else data
-        videoGameAdapter.items = data
+    override fun getContentLayout(): ContentLayoutBinding {
+        return binding.contentLayout
     }
 
-    private fun initViewPager() {
-        binding.viewPager.apply {
-            videoGamePagerAdapter = VideoGamePagerAdapter()
-            adapter = videoGamePagerAdapter
-        }
-    }
-
-    private fun initViewPagerTabLayout() {
-        val emptyStrategy = TabLayoutMediator.TabConfigurationStrategy { _, _ -> }
-        TabLayoutMediator(binding.viewPagerTabLayout, binding.viewPager, emptyStrategy).attach()
-    }
-
-    private fun initRecyclerView() {
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            videoGameAdapter = VideoGameAdapter(this@FavoritesFragment)
-            adapter = videoGameAdapter
-        }
-    }
-
-    override fun onVideoGameSelected(position: Int, binding: ListItemBinding) {
-        val videoGame = videoGameAdapter.items[position]
-
-        val extras = FragmentNavigatorExtras(
-            binding.title to "title_${videoGame.id}",
-            binding.ratingAndReleaseDate to "release_date_${videoGame.id}",
-            binding.videoGameImage to "image_${videoGame.id}")
-
-        findNavController().navigate(FavoritesFragmentDirections.favoritesToDetails(videoGame), extras)
+    override fun getDirectionToDetailFragment(videoGame: VideoGame): NavDirections {
+        return FavoritesFragmentDirections.favoritesToDetails(videoGame)
     }
 }

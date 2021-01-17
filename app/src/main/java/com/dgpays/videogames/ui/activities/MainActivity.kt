@@ -27,10 +27,6 @@ class MainActivity : AppCompatActivity(), Progress {
 
         val navController = findNavController(R.id.fragment_id)
 
-        val appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.homeFragment, R.id.favoritesFragment))
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNav.setupWithNavController(navController)
     }
 
