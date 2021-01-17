@@ -28,5 +28,5 @@ data class VideoGameEntity(
     val image: String,
 
     @ColumnInfo(name = "favorite")
-    val isFavorite: Boolean
+    val isFavorite: String
 )

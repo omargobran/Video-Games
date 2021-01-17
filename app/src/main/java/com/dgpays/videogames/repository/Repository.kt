@@ -42,7 +42,7 @@ constructor(
         }
     }
 
-    suspend fun getVideoGameById(id: Int): Flow<State<VideoGame>> = flow {
+    suspend fun getVideoGameDetails(id: Int): Flow<State<VideoGame>> = flow {
         emit(State.Loading)
         delay(2000)
         try {
@@ -51,7 +51,7 @@ constructor(
             val videoGame = gameDescriptionMapper.mapFromEntity(networkVideoGame)
 
             val isUpdated = videoGameDao.update(roomMapper.mapToEntity(videoGame))
-            Log.d(Constants.TAG, "getVideoGameById: update = $isUpdated")
+            Log.d(Constants.TAG, "getVideoGameById: updated rows = $isUpdated")
 
             val cachedVideoGame = videoGameDao.getVideoGameById(id)
 
@@ -78,6 +78,22 @@ constructor(
         try {
             val cachedFavoriteVideoGames = videoGameDao.getFavoriteVideoGames()
             emit(State.Success(roomMapper.mapFromEntityList(cachedFavoriteVideoGames)))
+        } catch (exception: Exception) {
+            Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
+            emit(State.Error(exception))
+        }
+    }
+
+    suspend fun favoriteVideoGame(id: Int, favorite: Boolean): Flow<State<Boolean>> = flow {
+        try {
+            val selectedCachedVideoGame = videoGameDao.getVideoGameById(id)
+
+            val selectedVideoGame = roomMapper.mapFromEntity(selectedCachedVideoGame)
+            selectedVideoGame.isFavorite = favorite
+
+            val updatedRowsCount = videoGameDao.update(roomMapper.mapToEntity(selectedVideoGame))
+            Log.d(Constants.TAG, "getVideoGameById: updated rows = $updatedRowsCount")
+            emit(State.Success(updatedRowsCount > 0))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
             emit(State.Error(exception))

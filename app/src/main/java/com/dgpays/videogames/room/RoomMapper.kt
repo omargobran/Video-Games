@@ -16,7 +16,7 @@ class RoomMapper: EntityMapper<VideoGameEntity, VideoGame> {
             entity.metaCriticRate,
             entity.releaseDate,
             entity.image,
-            entity.isFavorite
+            entity.isFavorite == "true"
         )
     }
 
@@ -29,7 +29,7 @@ class RoomMapper: EntityMapper<VideoGameEntity, VideoGame> {
             domainModel.metaCriticRate,
             domainModel.releaseDate,
             domainModel.image,
-            domainModel.isFavorite
+            domainModel.isFavorite.toString()
         )
     }
 

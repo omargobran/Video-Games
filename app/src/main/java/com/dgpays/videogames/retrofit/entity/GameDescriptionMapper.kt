@@ -10,7 +10,7 @@ class GameDescriptionMapper : EntityMapper<GetGameResponse, VideoGame> {
         return VideoGame(
             entity.id,
             entity.name,
-            entity.htmlDescription,
+            entity.rawDescription,
             entity.rating,
             entity.metaCritic,
             entity.released,

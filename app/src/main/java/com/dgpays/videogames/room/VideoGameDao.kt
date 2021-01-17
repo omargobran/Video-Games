@@ -22,7 +22,7 @@ interface VideoGameDao {
     @Query("SELECT * FROM video_games ORDER BY rating DESC")
     suspend fun getVideoGames(): List<VideoGameEntity>
 
-    @Query("SELECT * FROM video_games WHERE favorite LIKE 'true'")
+    @Query("SELECT * FROM video_games WHERE favorite LIKE 'true' ORDER BY rating DESC")
     suspend fun getFavoriteVideoGames(): List<VideoGameEntity>
 
     @Query("SELECT * FROM video_games WHERE id LIKE :id")

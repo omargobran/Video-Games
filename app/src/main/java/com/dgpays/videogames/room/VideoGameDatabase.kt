@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.dgpays.videogames.room.entity.VideoGameEntity
 
-@Database(entities = [VideoGameEntity::class], version = 1)
+@Database(entities = [VideoGameEntity::class], version = 2)
 abstract class VideoGameDatabase : RoomDatabase() {
     abstract fun videoGameDao(): VideoGameDao
 

@@ -32,5 +32,4 @@ class VideoGameAdapter constructor(
     override fun getItemCount(): Int {
         return items.size
     }
-
 }

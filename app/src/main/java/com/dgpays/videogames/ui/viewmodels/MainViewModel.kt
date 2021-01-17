@@ -3,19 +3,12 @@ package com.dgpays.videogames.ui.viewmodels
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dgpays.videogames.R
-import com.dgpays.videogames.model.VideoGame
 import com.dgpays.videogames.repository.Repository
-import com.dgpays.videogames.util.State
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class MainViewModel @ViewModelInject constructor(
     private val repo: Repository,
@@ -25,72 +18,36 @@ class MainViewModel @ViewModelInject constructor(
         @BindingAdapter("imageUrl")
         @JvmStatic
         fun setImageUrl(imageView: ImageView, url: String) {
+            val circularProgressDrawable = CircularProgressDrawable(imageView.context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+
             val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.ic_broken_image)
 
             Glide.with(imageView.context)
                 .load(url)
                 .apply(requestOptions)
                 .into(imageView)
         }
-    }
 
-    private val _videoGamesLiveData: MutableLiveData<State<List<VideoGame>>> = MutableLiveData()
-
-    val videoGamesLiveData: LiveData<State<List<VideoGame>>>
-        get() = _videoGamesLiveData
-
-    private val _videoGameDescriptionLiveData: MutableLiveData<State<VideoGame>> = MutableLiveData()
-
-    val videoGameDescriptionLiveData: LiveData<State<VideoGame>>
-        get() = _videoGameDescriptionLiveData
-
-    fun setStateEvent(event: Event) {
-        viewModelScope.launch {
-            when (event) {
-                is Event.GetGamesFromRemote -> {
-                    repo.getVideoGames().onEach {
-                        _videoGamesLiveData.value = it
-                    }.launchIn(viewModelScope)
-                }
-                is Event.GetGamesFromRoom -> {
-                    repo.getVideoGamesFromRoom().onEach {
-                        _videoGamesLiveData.value = it
-                    }.launchIn(viewModelScope)
-                }
-                is Event.GetGameDescription -> {
-                    repo.getVideoGameById(event.id).onEach {
-                        _videoGameDescriptionLiveData.value = it
-                    }.launchIn(viewModelScope)
-                }
-                is Event.GetFavoriteGames -> {
-                    repo.getFavoriteVideoGames().onEach {
-                        _videoGamesLiveData.value = it
-                    }.launchIn(viewModelScope)
-                }
-                is Event.None -> {
-                    // TODO: 15/01/21 do something
-                }
+        @BindingAdapter("favoriteImage")
+        @JvmStatic
+        fun setFavorite(imageView: ImageView, isFavorite: Boolean) {
+            imageView.apply {
+                setImageResource(
+                    if (isFavorite) {
+                        R.drawable.ic_star
+                    } else {
+                        R.drawable.ic_outline_star
+                    }
+                )
+                setColorFilter(R.color.red)
             }
         }
+
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
-    sealed class Event(val id: Int) {
-        constructor() : this(0)
-
-        class GetGameDescription(id: Int) : Event(id)
-
-        object GetGamesFromRemote : Event()
-
-        object GetGamesFromRoom : Event()
-
-        object GetFavoriteGames : Event()
-
-        object None : Event()
-    }
 }

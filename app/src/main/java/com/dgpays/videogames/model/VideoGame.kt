@@ -1,12 +1,14 @@
 package com.dgpays.videogames.model
 
+import java.io.Serializable
+
 data class VideoGame(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val rating: Double,
-    val metaCriticRate: Int,
-    val releaseDate: String,
-    val image: String,
-    val isFavorite: Boolean
-)
+    var id: Int,
+    var title: String,
+    var description: String,
+    var rating: Double,
+    var metaCriticRate: Int,
+    var releaseDate: String,
+    var image: String,
+    var isFavorite: Boolean
+) : Serializable
