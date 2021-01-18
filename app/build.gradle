@@ -10,6 +10,15 @@ android {
     compileSdkVersion 29
     buildToolsVersion "30.0.0"
 
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword '1q2w3e4r5t'
+            storeFile file('my-release-key.keystore')
+            storePassword '1q2w3e4r5t'
+        }
+    }
+
     defaultConfig {
         applicationId "com.dgpays.videogames"
         minSdkVersion 16
@@ -24,6 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
