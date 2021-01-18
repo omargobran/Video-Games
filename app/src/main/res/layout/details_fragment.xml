@@ -30,30 +30,36 @@
 
             <ImageView
                 android:id="@+id/video_game_image"
+                imageUrl="@{videoGame.image}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                imageUrl="@{videoGame.image}"
                 android:scaleType="centerCrop" />
 
             <ImageButton
                 android:id="@+id/favorite_button"
+                favoriteImage="@{videoGame.favorite}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                favoriteImage="@{videoGame.favorite}"
-                android:onClick="@{onClickListener.onClick}"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:scaleType="centerCrop"
                 android:background="@color/transparent"
+                android:onClick="@{onClickListener.onClick}"
+                android:padding="20dp"
+                android:scaleType="centerCrop"
+                android:tint="@color/white"
                 tools:ignore="RtlCompat" />
 
         </RelativeLayout>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:weightSum="100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,53 +68,53 @@
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@{videoGame.title}"
                 android:textStyle="bold"
-                android:gravity="center_vertical"
                 app:autoSizeMaxTextSize="40sp"
                 app:autoSizeMinTextSize="20sp"
-                app:autoSizeStepGranularity="3sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:autoSizeStepGranularity="1sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/release_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{videoGame.releaseDate}'
+                android:layout_weight="0.5"
                 android:gravity="center_vertical"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintEnd_toEndOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/title"/>
+                android:maxLines="1"
+                android:text='@{videoGame.releaseDate}'
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/meta_critic_rate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{"" + videoGame.metaCriticRate}'
+                android:layout_weight="0.5"
                 android:gravity="center_vertical"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintEnd_toEndOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/release_date"/>
+                android:maxLines="1"
+                android:text='@{"" + videoGame.metaCriticRate}'
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/desc"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:scrollbars = "none"
+                android:layout_height="wrap_content"
+                android:layout_weight="96"
+                android:scrollbars="none"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:text="@{videoGame.description}"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintEnd_toEndOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/meta_critic_rate"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                android:textSize="15sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

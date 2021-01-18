@@ -90,11 +90,9 @@ class HomeFragment : BaseContentLayoutFragment() {
         }
     }
 
-    override fun getContentLayout(): ContentLayoutBinding {
-        return binding.contentLayout
-    }
+    override fun getContentLayout() = binding.contentLayout
 
-    override fun getDirectionToDetailFragment(videoGame: VideoGame): NavDirections {
-        return HomeFragmentDirections.homeToDetails(videoGame)
-    }
+    override fun getDirectionToDetailFragment(videoGame: VideoGame) = HomeFragmentDirections.homeToDetails(videoGame)
+
+    override fun hideViewPagerForeverInFragment() = false
 }

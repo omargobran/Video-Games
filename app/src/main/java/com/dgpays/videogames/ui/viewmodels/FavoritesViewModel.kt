@@ -21,7 +21,7 @@ class FavoritesViewModel @ViewModelInject constructor(
     val videoGamesLiveData: LiveData<State<List<VideoGame>>>
         get() = _videoGamesLiveData
 
-    fun setStateEvent(event: FavoritesViewModel.Event) {
+    fun setStateEvent(event: Event) {
         viewModelScope.launch {
             when (event) {
                 is Event.GetFavoriteGames -> {

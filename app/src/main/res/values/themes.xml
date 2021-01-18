@@ -3,7 +3,7 @@
     <style name="Theme.VideoGames" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/gray</item>
+        <item name="colorPrimaryVariant">@color/darker_gray</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -16,6 +16,11 @@
         <!-- Customize your theme here. -->
         <item name="colorControlActivated">?attr/colorPrimaryVariant</item>
         <item name="tabStyle">@style/Theme.VideoGames.TabLayout</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="Theme.VideoGames.TabLayout" parent="Widget.Design.TabLayout">

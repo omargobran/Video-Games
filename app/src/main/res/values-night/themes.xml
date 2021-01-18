@@ -16,6 +16,11 @@
         <!-- Customize your theme here. -->
         <item name="colorControlActivated">?attr/colorPrimaryVariant</item>
         <item name="tabStyle">@style/Theme.VideoGames.TabLayout</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">

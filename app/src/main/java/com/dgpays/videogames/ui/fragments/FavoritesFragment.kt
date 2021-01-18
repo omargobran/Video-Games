@@ -59,11 +59,9 @@ class FavoritesFragment : BaseContentLayoutFragment() {
         viewModel.setStateEvent(FavoritesViewModel.Event.GetFavoriteGames)
     }
 
-    override fun getContentLayout(): ContentLayoutBinding {
-        return binding.contentLayout
-    }
+    override fun getContentLayout() = binding.contentLayout
 
-    override fun getDirectionToDetailFragment(videoGame: VideoGame): NavDirections {
-        return FavoritesFragmentDirections.favoritesToDetails(videoGame)
-    }
+    override fun getDirectionToDetailFragment(videoGame: VideoGame) = FavoritesFragmentDirections.favoritesToDetails(videoGame)
+
+    override fun hideViewPagerForeverInFragment() = true
 }

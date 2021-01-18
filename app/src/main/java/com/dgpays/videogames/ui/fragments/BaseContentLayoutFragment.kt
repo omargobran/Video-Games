@@ -1,11 +1,8 @@
 package com.dgpays.videogames.ui.fragments
 
-import android.app.ActionBar
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavDirections
@@ -35,6 +32,7 @@ abstract class BaseContentLayoutFragment :
 
     abstract fun getContentLayout(): ContentLayoutBinding
     abstract fun getDirectionToDetailFragment(videoGame: VideoGame): NavDirections
+    abstract fun hideViewPagerForeverInFragment(): Boolean
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +41,9 @@ abstract class BaseContentLayoutFragment :
         initViewPagerDotsIndicator()
         initRecyclerView()
         initSearchView()
+        if (hideViewPagerForeverInFragment()) {
+            hideViewPager()
+        }
     }
 
     private fun initSearchView() {
@@ -53,9 +54,16 @@ abstract class BaseContentLayoutFragment :
         val top3VideoGames = data.dropLastWhile { data.indexOf(it) > 2 }
         val restOfGames = data.drop(3)
 
-        videoGamePagerAdapter.items = top3VideoGames
+        if (binding.viewPager.visibility == View.VISIBLE) {
+            videoGamePagerAdapter.items = top3VideoGames
+        }
+
         videoGameAdapter.apply {
-            items = restOfGames
+            items = if (binding.viewPager.visibility == View.VISIBLE) {
+                restOfGames
+            } else {
+                data
+            }
             allItems = data
         }
     }
@@ -74,7 +82,8 @@ abstract class BaseContentLayoutFragment :
     private fun initRecyclerView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            videoGameAdapter = VideoGameAdapter(this@BaseContentLayoutFragment, this@BaseContentLayoutFragment)
+            videoGameAdapter =
+                VideoGameAdapter(this@BaseContentLayoutFragment, this@BaseContentLayoutFragment)
             adapter = videoGameAdapter
         }
     }
@@ -116,7 +125,7 @@ abstract class BaseContentLayoutFragment :
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        return true
+        return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
@@ -179,9 +188,11 @@ abstract class BaseContentLayoutFragment :
     }
 
     private fun showViewPager() {
-        binding.apply {
-            viewPager.isGone = false
-            dotsIndicator.isGone = false
+        if (!hideViewPagerForeverInFragment()) {
+            binding.apply {
+                viewPager.isGone = false
+                dotsIndicator.isGone = false
+            }
         }
     }
 

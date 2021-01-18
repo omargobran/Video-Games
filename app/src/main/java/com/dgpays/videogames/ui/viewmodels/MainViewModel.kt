@@ -1,5 +1,6 @@
 package com.dgpays.videogames.ui.viewmodels
 
+import android.graphics.PorterDuff
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.hilt.lifecycle.ViewModelInject
@@ -24,7 +25,7 @@ class MainViewModel @ViewModelInject constructor(
             val circularProgressDrawable = CircularProgressDrawable(imageView.context).apply {
                 strokeWidth = 7f
                 centerRadius = 30f
-                setColorSchemeColors(R.style.Theme_VideoGames)
+                setColorFilter(R.attr.colorPrimaryVariant, PorterDuff.Mode.MULTIPLY)
                 start()
             }
 
@@ -41,16 +42,13 @@ class MainViewModel @ViewModelInject constructor(
         @BindingAdapter("favoriteImage")
         @JvmStatic
         fun setFavorite(imageView: ImageView, isFavorite: Boolean) {
-            imageView.apply {
-                setImageResource(
-                    if (isFavorite) {
-                        R.drawable.ic_like
-                    } else {
-                        R.drawable.ic_like_outline
-                    }
-                )
-                setColorFilter(R.style.Theme_VideoGames)
-            }
+            imageView.setImageResource(
+                if (isFavorite) {
+                    R.drawable.ic_like
+                } else {
+                    R.drawable.ic_like_outline
+                }
+            )
         }
 
     }

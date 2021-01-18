@@ -44,17 +44,21 @@
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
+                android:layout_height="25dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@{videoGame.title}"
-                app:autoSizeMaxTextSize="30sp"
-                app:autoSizeMinTextSize="20sp"
-                app:autoSizeStepGranularity="2sp"
+                app:autoSizeMaxTextSize="35sp"
+                app:autoSizeMinTextSize="15sp"
+                app:autoSizeStepGranularity="1sp"
                 app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/rating_and_release_date"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text='@{videoGame.rating + "     " + videoGame.releaseDate}'
                 android:textSize="15sp" />
 
