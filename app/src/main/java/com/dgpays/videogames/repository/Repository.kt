@@ -29,8 +29,18 @@ constructor(
         emit(State.Loading)
         delay(2000)
         try {
+            val oldCachedVideoGames = videoGameDao.getVideoGames()
+
             val networkVideoGames = videoGameRetrofit.getVideoGames()
             val videoGames = responseResultMapper.mapFromEntityList(networkVideoGames.results)
+
+            videoGames.map { newVideoGame ->
+                oldCachedVideoGames.map { oldVideoGame ->
+                    if (newVideoGame.id == oldVideoGame.id) {
+                        newVideoGame.isFavorite = (oldVideoGame.isFavorite == "true")
+                    }
+                }
+            }
 
             videoGameDao.insertVideoGames(roomMapper.mapToEntityList(videoGames))
             val cachedVideoGames = videoGameDao.getVideoGames()
@@ -46,9 +56,13 @@ constructor(
         emit(State.Loading)
         delay(2000)
         try {
+            val oldCachedVideoGame = videoGameDao.getVideoGameById(id)
+
             val networkVideoGame = videoGameRetrofit.getVideoGameDetails(id)
 
             val videoGame = gameDescriptionMapper.mapFromEntity(networkVideoGame)
+
+            videoGame.isFavorite = (oldCachedVideoGame.isFavorite == "true")
 
             val isUpdated = videoGameDao.update(roomMapper.mapToEntity(videoGame))
             Log.d(Constants.TAG, "getVideoGameById: updated rows = $isUpdated")
@@ -92,6 +106,17 @@ constructor(
             selectedVideoGame.isFavorite = favorite
 
             val updatedRowsCount = videoGameDao.update(roomMapper.mapToEntity(selectedVideoGame))
+            Log.d(Constants.TAG, "getVideoGameById: updated rows = $updatedRowsCount")
+            emit(State.Success(updatedRowsCount > 0))
+        } catch (exception: Exception) {
+            Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
+            emit(State.Error(exception))
+        }
+    }
+
+    suspend fun deleteAllVideoGames(): Flow<State<Boolean>> = flow {
+        try {
+            val updatedRowsCount = videoGameDao.deleteAll()
             Log.d(Constants.TAG, "getVideoGameById: updated rows = $updatedRowsCount")
             emit(State.Success(updatedRowsCount > 0))
         } catch (exception: Exception) {

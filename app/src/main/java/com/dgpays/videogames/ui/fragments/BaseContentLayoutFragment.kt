@@ -2,24 +2,28 @@ package com.dgpays.videogames.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dgpays.videogames.R
 import com.dgpays.videogames.databinding.ContentLayoutBinding
 import com.dgpays.videogames.databinding.ListItemBinding
 import com.dgpays.videogames.databinding.PagerItemBinding
 import com.dgpays.videogames.model.VideoGame
 import com.dgpays.videogames.ui.adapter.VideoGameAdapter
 import com.dgpays.videogames.ui.adapter.VideoGamePagerAdapter
+import com.dgpays.videogames.ui.callback.FilterErrorCallback
 import com.dgpays.videogames.ui.callback.VideoGameCallback
 
 abstract class BaseContentLayoutFragment :
     BaseFragment(),
     VideoGameCallback,
-    androidx.appcompat.widget.SearchView.OnQueryTextListener {
+    SearchView.OnQueryTextListener, FilterErrorCallback {
 
     private lateinit var videoGameAdapter: VideoGameAdapter
     private lateinit var videoGamePagerAdapter: VideoGamePagerAdapter
@@ -47,7 +51,10 @@ abstract class BaseContentLayoutFragment :
         val restOfGames = data.drop(3)
 
         videoGamePagerAdapter.items = top3VideoGames
-        videoGameAdapter.items = restOfGames
+        videoGameAdapter.apply {
+            items = restOfGames
+            allItems = data
+        }
     }
 
     private fun initViewPager() {
@@ -64,7 +71,7 @@ abstract class BaseContentLayoutFragment :
     private fun initRecyclerView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            videoGameAdapter = VideoGameAdapter(this@BaseContentLayoutFragment)
+            videoGameAdapter = VideoGameAdapter(this@BaseContentLayoutFragment, this@BaseContentLayoutFragment)
             adapter = videoGameAdapter
         }
     }
@@ -106,16 +113,80 @@ abstract class BaseContentLayoutFragment :
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        if (!newText.isNullOrEmpty()) {
-            if (newText.length >= 3) {
-                videoGameAdapter.filter.filter(newText)
-                return true
-            }
+        return if (!newText.isNullOrEmpty() && newText.length >= 3) {
+            hideViewPager()
+            videoGameAdapter.filter.filter(newText)
+            true
+        } else {
+            resetErrorMessageAction(true)
+            setDataToViews(videoGameAdapter.allItems)
+            false
         }
-        return false
+    }
+
+    override fun onFilterError() {
+        errorMessageAction(getString(R.string.game_not_found), false)
+    }
+
+    fun errorMessageAction(message: String, hideSearchView: Boolean) {
+        if (hideSearchView) hideSearchView()
+        hideViewPager()
+        hideRecyclerView()
+        showErrorMessage(message)
+    }
+
+    fun resetErrorMessageAction(showViewPager: Boolean) {
+        showSearchView()
+        if (showViewPager) showViewPager()
+        showRecyclerView()
+        resetErrorMessage()
+    }
+
+    private fun resetErrorMessage() {
+        binding.errorMessage.apply {
+            text = ""
+            isGone = true
+        }
+    }
+
+    private fun showErrorMessage(message: String) {
+        binding.errorMessage.apply {
+            text = message
+            isGone = false
+        }
+    }
+
+    private fun hideRecyclerView() {
+        binding.recyclerView.isGone = true
+    }
+
+    private fun showRecyclerView() {
+        binding.recyclerView.isGone = false
+    }
+
+    private fun hideViewPager() {
+        binding.apply {
+            viewPager.isGone = true
+            dotsIndicator.isGone = true
+        }
+    }
+
+    private fun showViewPager() {
+        binding.apply {
+            viewPager.isGone = false
+            dotsIndicator.isGone = false
+        }
+    }
+
+    private fun hideSearchView() {
+        binding.searchView.isGone = true
+    }
+
+    private fun showSearchView() {
+        binding.searchView.isGone = false
     }
 }

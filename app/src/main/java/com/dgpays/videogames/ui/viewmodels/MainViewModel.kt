@@ -1,17 +1,17 @@
 package com.dgpays.videogames.ui.viewmodels
 
-import android.graphics.Color
-import android.graphics.ColorFilter
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dgpays.videogames.R
 import com.dgpays.videogames.repository.Repository
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
 
 class MainViewModel @ViewModelInject constructor(
     private val repo: Repository,
@@ -55,4 +55,9 @@ class MainViewModel @ViewModelInject constructor(
 
     }
 
+    fun deleteAllVideoGames() {
+        viewModelScope.launch {
+            repo.deleteAllVideoGames().launchIn(this)
+        }
+    }
 }

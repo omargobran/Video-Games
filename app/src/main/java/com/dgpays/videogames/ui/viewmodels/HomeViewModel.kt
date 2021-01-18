@@ -30,12 +30,12 @@ class HomeViewModel @ViewModelInject constructor(
                 is Event.GetGamesFromRemote -> {
                     repo.getVideoGames().onEach {
                         _videoGamesLiveData.value = it
-                    }.launchIn(viewModelScope)
+                    }.launchIn(this)
                 }
                 is Event.GetGamesFromRoom -> {
                     repo.getVideoGamesFromRoom().onEach {
                         _videoGamesLiveData.value = it
-                    }.launchIn(viewModelScope)
+                    }.launchIn(this)
                 }
                 else -> {
                     // do nothing

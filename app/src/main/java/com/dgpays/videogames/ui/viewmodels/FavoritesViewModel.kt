@@ -27,7 +27,7 @@ class FavoritesViewModel @ViewModelInject constructor(
                 is Event.GetFavoriteGames -> {
                     repo.getFavoriteVideoGames().onEach {
                         _videoGamesLiveData.value = it
-                    }.launchIn(viewModelScope)
+                    }.launchIn(this)
                 }
             }
         }

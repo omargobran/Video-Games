@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Video Games</string>
+    <string name="try_again_later">Üzgünüz, beklenmedik hata oluştu!\n\nDaha sonra tekrar deneyiniz.</string>
+    <string name="no_favorites">Üzgünüz, favori oyun bulunamadı!</string>
+    <string name="game_not_found">Üzgünüz, aradığınız oyun bulunamadı!</string>
+    <string name="pref_key">shared_pref</string>
+    <string name="pref_key_call_service">call_service</string>
 </resources>

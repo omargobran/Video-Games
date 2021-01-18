@@ -27,10 +27,10 @@ class DetailsViewModel @ViewModelInject constructor(
                 is Event.GetGameDescription -> {
                     repo.getVideoGameDetails(event.id).onEach {
                         _videoGameDescriptionLiveData.value = it
-                    }.launchIn(viewModelScope)
+                    }.launchIn(this)
                 }
                 is Event.MakeGameFavorite -> {
-                    repo.favoriteVideoGame(event.id, event.favorite).launchIn(viewModelScope)
+                    repo.favoriteVideoGame(event.id, event.favorite).launchIn(this)
                 }
             }
         }

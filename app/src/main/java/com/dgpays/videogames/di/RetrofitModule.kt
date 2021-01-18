@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -25,23 +26,27 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient
-            .Builder().apply {
-                addInterceptor(
-                    HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                        Log.d(Constants.TAG, "Retrofit : $it")
-                    }).setLevel(HttpLoggingInterceptor.Level.BODY)
-                )
-                addInterceptor(Interceptor {
-                    val request = it.request().newBuilder()
-                        .addHeader("x-rapidapi-key",
-                            "6a6fdc883bmshf118a899f5a4f82p1b74c8jsn6151fa84778d")
-                        .addHeader("x-rapidapi-host", "rawg-video-games-database.p.rapidapi.com")
-                        .addHeader("useQueryString", "true")
+        return OkHttpClient.Builder()
+            .addInterceptor(
+                HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
+                    Log.d(Constants.TAG, "Retrofit : $it")
+                }).setLevel(HttpLoggingInterceptor.Level.BODY)
+            )
+            .addInterceptor(Interceptor {
+                val request = it.request().newBuilder()
+                    .addHeader("x-rapidapi-key", "6a6fdc883bmshf118a899f5a4f82p1b74c8jsn6151fa84778d")
+                    .addHeader("x-rapidapi-host", "rawg-video-games-database.p.rapidapi.com")
+                    .method(it.request().method(), it.request().body())
+                    .build()
 
-                    return@Interceptor it.proceed(request.build())
-                })
-            }.build()
+                Log.d(Constants.TAG, "Retrofit : ${it.request()}")
+
+                return@Interceptor it.proceed(request)
+            })
+            .connectTimeout(25, TimeUnit.SECONDS)
+            .readTimeout(45, TimeUnit.SECONDS)
+            .writeTimeout(45, TimeUnit.SECONDS)
+            .build()
     }
 
     @Singleton
