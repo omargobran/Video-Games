@@ -44,9 +44,9 @@ class MainViewModel @ViewModelInject constructor(
             imageView.apply {
                 setImageResource(
                     if (isFavorite) {
-                        R.drawable.ic_star
+                        R.drawable.ic_like
                     } else {
-                        R.drawable.ic_outline_star
+                        R.drawable.ic_like_outline
                     }
                 )
                 setColorFilter(R.style.Theme_VideoGames)

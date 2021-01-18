@@ -1,8 +1,11 @@
 package com.dgpays.videogames.ui.fragments
 
+import android.app.ActionBar
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavDirections
