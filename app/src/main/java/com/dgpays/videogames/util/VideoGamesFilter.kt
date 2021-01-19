@@ -24,11 +24,11 @@ class VideoGamesFilter constructor(
 
     override fun publishResults(charSequence: CharSequence, filterResults: FilterResults?) {
         if (filterResults != null) {
-            originalItems = filterResults.values as List<VideoGame>
-            if (originalItems.isNullOrEmpty()) {
+            val filteredItems = filterResults.values as List<VideoGame>
+            if (filteredItems.isNullOrEmpty()) {
                 filterErrorAction()
             } else {
-                adapter.items = originalItems
+                adapter.items = filteredItems
             }
         } else {
             filterErrorAction()

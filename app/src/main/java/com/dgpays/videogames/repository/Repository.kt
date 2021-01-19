@@ -27,7 +27,6 @@ constructor(
 ) {
     suspend fun getVideoGames(): Flow<State<List<VideoGame>>> = flow {
         emit(State.Loading)
-        delay(2000)
         try {
             val oldCachedVideoGames = videoGameDao.getVideoGames()
 
@@ -54,7 +53,6 @@ constructor(
 
     suspend fun getVideoGameDetails(id: Int): Flow<State<VideoGame>> = flow {
         emit(State.Loading)
-        delay(2000)
         try {
             val oldCachedVideoGame = videoGameDao.getVideoGameById(id)
 

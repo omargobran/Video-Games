@@ -125,12 +125,13 @@ abstract class BaseContentLayoutFragment :
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
         return if (!newText.isNullOrEmpty() && newText.length >= 3) {
             hideViewPager()
+            resetErrorMessageAction(false)
             videoGameAdapter.filter.filter(newText)
             true
         } else {

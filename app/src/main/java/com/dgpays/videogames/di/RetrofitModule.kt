@@ -39,8 +39,6 @@ object RetrofitModule {
                     .method(it.request().method(), it.request().body())
                     .build()
 
-                Log.d(Constants.TAG, "Retrofit : ${it.request()}")
-
                 return@Interceptor it.proceed(request)
             })
             .connectTimeout(25, TimeUnit.SECONDS)
