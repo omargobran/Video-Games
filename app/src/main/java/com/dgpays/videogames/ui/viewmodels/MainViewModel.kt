@@ -23,7 +23,7 @@ class MainViewModel @ViewModelInject constructor(
         @JvmStatic
         fun setImageUrl(imageView: ImageView, url: String) {
             val circularProgressDrawable = CircularProgressDrawable(imageView.context).apply {
-                strokeWidth = 7f
+                strokeWidth = 8f
                 centerRadius = 30f
                 setColorFilter(R.attr.colorPrimaryVariant, PorterDuff.Mode.MULTIPLY)
                 start()

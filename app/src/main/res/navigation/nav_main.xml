@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.dgpays.videogames.ui.fragments.HomeFragment"
-        android:label="Home"
+        android:label="Anasayfa"
         tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/home_to_favorites"
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.dgpays.videogames.ui.fragments.FavoritesFragment"
-        android:label="Favorites"
+        android:label="Favori"
         tools:layout="@layout/favorites_fragment">
         <action
             android:id="@+id/favorites_to_home"
