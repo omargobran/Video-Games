@@ -53,6 +53,7 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
                 is State.Success<VideoGame> -> {
                     progress.hideProgress()
                     game = it.data
+                    viewModel.videoGame = it.data
                     binding.videoGame = it.data
                 }
                 is State.Error -> {
@@ -65,7 +66,12 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
             }
         })
 
-        if (game.description.isNullOrEmpty()) {
+        // ilk acildiginda set edilsin sonra viewModel deki deger kontrol edilecek
+        if (viewModel.videoGame == null) {
+            viewModel.videoGame = game
+        }
+
+        if (viewModel.videoGame!!.description.isEmpty()) {
             viewModel.setStateEvent(DetailsViewModel.Event.GetGameDescription(game.id))
         }
     }
