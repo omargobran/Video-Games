@@ -52,6 +52,7 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
             when (it) {
                 is State.Success<VideoGame> -> {
                     progress.hideProgress()
+                    game = it.data
                     binding.videoGame = it.data
                 }
                 is State.Error -> {
