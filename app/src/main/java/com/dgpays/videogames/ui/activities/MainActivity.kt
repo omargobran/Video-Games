@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.dgpays.videogames.R
 import com.dgpays.videogames.databinding.ActivityMainBinding
 import com.dgpays.videogames.ui.viewmodels.MainViewModel
 import com.dgpays.videogames.util.Progress
@@ -25,9 +22,10 @@ class MainActivity : AppCompatActivity(), Progress {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navController = findNavController(R.id.fragment_id)
+        val navController =
+            supportFragmentManager.findFragmentById(binding.fragmentView.id)?.findNavController()
 
-        binding.bottomNav.setupWithNavController(navController)
+        navController?.let { binding.bottomNav.setupWithNavController(it) }
     }
 
     override fun showProgress(message: String?) {

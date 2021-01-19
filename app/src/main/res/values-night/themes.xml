@@ -1,6 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Theme.VideoGames" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.VideoGames" parent="Theme.Base">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/gray</item>
@@ -9,22 +9,5 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Tab Layout. -->
-        <item name="android:tabWidgetStyle">@style/Theme.VideoGames.TabLayout</item>
-        <!-- Customize your theme here. -->
-        <item name="colorControlActivated">?attr/colorPrimaryVariant</item>
-        <item name="tabStyle">@style/Theme.VideoGames.TabLayout</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:textColor">?attr/colorPrimaryVariant</item>
-    </style>
-
-    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabSelectedTextColor">?attr/colorPrimaryVariant</item>
-        <item name="tabTextColor">?attr/colorPrimary</item>
     </style>
 </resources>
