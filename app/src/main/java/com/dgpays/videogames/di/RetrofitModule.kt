@@ -1,6 +1,7 @@
 package com.dgpays.videogames.di
 
 import android.util.Log
+import com.dgpays.videogames.BuildConfig
 import com.dgpays.videogames.retrofit.ResponseResultMapper
 import com.dgpays.videogames.retrofit.VideoGameRetrofit
 import com.dgpays.videogames.retrofit.entity.GameDescriptionMapper
@@ -34,12 +35,11 @@ object RetrofitModule {
             )
             .addInterceptor(Interceptor {
                 val request = it.request().newBuilder()
-                    .addHeader("x-rapidapi-key", "6a6fdc883bmshf118a899f5a4f82p1b74c8jsn6151fa84778d")
-                    .addHeader("x-rapidapi-host", "rawg-video-games-database.p.rapidapi.com")
-                    .method(it.request().method(), it.request().body())
-                    .build()
+                val originalHttpUrl = it.request().url()
+                val newUrl = originalHttpUrl.newBuilder().addQueryParameter("key", BuildConfig.API_KEY).build()
 
-                return@Interceptor it.proceed(request)
+                request.url(newUrl)
+                return@Interceptor it.proceed(request.build())
             })
             .connectTimeout(25, TimeUnit.SECONDS)
             .readTimeout(45, TimeUnit.SECONDS)
@@ -59,7 +59,7 @@ object RetrofitModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://rawg-video-games-database.p.rapidapi.com/")
+            .baseUrl("https://api.rawg.io/api/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

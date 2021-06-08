@@ -7,8 +7,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "30.0.0"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     signingConfigs {
         release {
@@ -22,9 +22,11 @@ android {
     defaultConfig {
         applicationId "com.dgpays.videogames"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "API_KEY", '""'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
