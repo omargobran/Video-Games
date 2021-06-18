@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
-object RetrofitModule {
+object NetworkModule {
 
     @Singleton
     @Provides

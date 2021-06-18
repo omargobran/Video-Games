@@ -37,31 +37,7 @@ class HomeFragment : BaseContentLayoutFragment() {
         viewModel.videoGamesLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is State.Success<List<VideoGame>> -> {
-                    when (viewModel.event) {
-                        is HomeViewModel.Event.GetGamesFromRoom -> {
-                            if (it.data.isNullOrEmpty()) {
-                                Log.d(Constants.TAG, "onViewCreated: no video games in db, requesting from api")
-                                viewModel.setStateEvent(HomeViewModel.Event.GetGamesFromRemote)
-                            } else {
-                                progress.hideProgress()
-                                resetErrorMessageAction(true)
-                                setDataToViews(it.data)
-                            }
-                        }
-                        is HomeViewModel.Event.GetGamesFromRemote -> {
-                            progress.hideProgress()
-                            if (it.data.isNullOrEmpty()) {
-                                errorMessageAction(getString(R.string.try_again_later), true)
-                            } else {
-                                resetErrorMessageAction(true)
-                                setDataToViews(it.data)
-                            }
-                        }
-                        else -> {
-                            progress.hideProgress()
-                            // do nothing
-                        }
-                    }
+                    successStateProcess(it);
                 }
                 is State.Error -> {
                     progress.hideProgress()
@@ -84,6 +60,34 @@ class HomeFragment : BaseContentLayoutFragment() {
                 SharedPreferencesUtil.setCallService(it, false)
             } else {
                 viewModel.setStateEvent(HomeViewModel.Event.GetGamesFromRemote)
+            }
+        }
+    }
+
+    private fun successStateProcess(state: State.Success<List<VideoGame>>) {
+        when (viewModel.event) {
+            is HomeViewModel.Event.GetGamesFromRoom -> {
+                if (state.data.isNullOrEmpty()) {
+                    Log.d(Constants.TAG, "onViewCreated: no video games in db, requesting from api")
+                    viewModel.setStateEvent(HomeViewModel.Event.GetGamesFromRemote)
+                } else {
+                    progress.hideProgress()
+                    resetErrorMessageAction(true)
+                    setDataToViews(state.data)
+                }
+            }
+            is HomeViewModel.Event.GetGamesFromRemote -> {
+                progress.hideProgress()
+                if (state.data.isNullOrEmpty()) {
+                    errorMessageAction(getString(R.string.try_again_later), true)
+                } else {
+                    resetErrorMessageAction(true)
+                    setDataToViews(state.data)
+                }
+            }
+            else -> {
+                progress.hideProgress()
+                // do nothing
             }
         }
     }

@@ -9,7 +9,7 @@
 
         <variable
             name="videoGame"
-            type="com.dgpays.videogames.model.VideoGame" />
+            type="com.dgpays.videogames.domain.model.VideoGame" />
 
     </data>
 

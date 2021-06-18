@@ -42,6 +42,6 @@
             app:destination="@id/favoritesFragment" />
         <argument
             android:name="videoGame"
-            app:argType="com.dgpays.videogames.model.VideoGame" />
+            app:argType="com.dgpays.videogames.domain.model.VideoGame" />
     </fragment>
 </navigation>
