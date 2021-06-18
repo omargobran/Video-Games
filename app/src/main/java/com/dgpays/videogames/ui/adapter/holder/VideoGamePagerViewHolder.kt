@@ -4,7 +4,7 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dgpays.videogames.databinding.PagerItemBinding
-import com.dgpays.videogames.model.VideoGame
+import com.dgpays.videogames.domain.model.VideoGame
 import com.dgpays.videogames.ui.callback.VideoGameCallback
 
 class VideoGamePagerViewHolder constructor(

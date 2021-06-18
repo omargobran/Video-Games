@@ -1,7 +1,7 @@
 package com.dgpays.videogames.util
 
 import android.widget.Filter
-import com.dgpays.videogames.model.VideoGame
+import com.dgpays.videogames.domain.model.VideoGame
 import com.dgpays.videogames.ui.adapter.VideoGameAdapter
 import com.dgpays.videogames.ui.callback.FilterErrorCallback
 

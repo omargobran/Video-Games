@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavDirections
 import com.dgpays.videogames.R
-import com.dgpays.videogames.databinding.ContentLayoutBinding
 import com.dgpays.videogames.databinding.FavoritesFragmentBinding
-import com.dgpays.videogames.model.VideoGame
+import com.dgpays.videogames.domain.model.VideoGame
 import com.dgpays.videogames.ui.viewmodels.FavoritesViewModel
 import com.dgpays.videogames.util.State
 import dagger.hilt.android.AndroidEntryPoint

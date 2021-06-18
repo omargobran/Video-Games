@@ -1,15 +1,14 @@
 package com.dgpays.videogames.repository
 
 import android.util.Log
-import com.dgpays.videogames.model.VideoGame
-import com.dgpays.videogames.retrofit.ResponseResultMapper
-import com.dgpays.videogames.retrofit.VideoGameRetrofit
-import com.dgpays.videogames.retrofit.entity.GameDescriptionMapper
-import com.dgpays.videogames.room.RoomMapper
-import com.dgpays.videogames.room.VideoGameDao
+import com.dgpays.videogames.domain.model.VideoGame
+import com.dgpays.videogames.network.util.ResponseResultMapper
+import com.dgpays.videogames.network.VideoGameRetrofit
+import com.dgpays.videogames.network.util.VideoGameDtoMapper
+import com.dgpays.videogames.cache.VideoGameEntityMapper
+import com.dgpays.videogames.cache.VideoGameDao
 import com.dgpays.videogames.util.Constants
 import com.dgpays.videogames.util.State
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -19,8 +18,8 @@ import javax.inject.Singleton
 class Repository
 @Inject
 constructor(
-    private val roomMapper: RoomMapper,
-    private val gameDescriptionMapper: GameDescriptionMapper,
+    private val videoGameEntityMapper: VideoGameEntityMapper,
+    private val videoGameDtoMapper: VideoGameDtoMapper,
     private val responseResultMapper: ResponseResultMapper,
     private val videoGameDao: VideoGameDao,
     private val videoGameRetrofit: VideoGameRetrofit,
@@ -41,10 +40,10 @@ constructor(
                 }
             }
 
-            videoGameDao.insertVideoGames(roomMapper.mapToEntityList(videoGames))
+            videoGameDao.insertVideoGames(videoGameEntityMapper.mapToEntityList(videoGames))
             val cachedVideoGames = videoGameDao.getVideoGames()
 
-            emit(State.Success(roomMapper.mapFromEntityList(cachedVideoGames)))
+            emit(State.Success(videoGameEntityMapper.mapFromEntityList(cachedVideoGames)))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
             emit(State.Error(exception))
@@ -58,16 +57,16 @@ constructor(
 
             val networkVideoGame = videoGameRetrofit.getVideoGameDetails(id)
 
-            val videoGame = gameDescriptionMapper.mapFromEntity(networkVideoGame)
+            val videoGame = videoGameDtoMapper.mapToDomainModel(networkVideoGame)
 
             videoGame.isFavorite = (oldCachedVideoGame.isFavorite == "true")
 
-            val isUpdated = videoGameDao.update(roomMapper.mapToEntity(videoGame))
+            val isUpdated = videoGameDao.update(videoGameEntityMapper.mapFromDomainModel(videoGame))
             Log.d(Constants.TAG, "getVideoGameById: updated rows = $isUpdated")
 
             val cachedVideoGame = videoGameDao.getVideoGameById(id)
 
-            emit(State.Success(roomMapper.mapFromEntity(cachedVideoGame)))
+            emit(State.Success(videoGameEntityMapper.mapToDomainModel(cachedVideoGame)))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : ${exception.message}", exception)
             emit(State.Error(exception))
@@ -78,7 +77,7 @@ constructor(
         emit(State.Loading)
         try {
             val cachedVideoGames = videoGameDao.getVideoGames()
-            emit(State.Success(roomMapper.mapFromEntityList(cachedVideoGames)))
+            emit(State.Success(videoGameEntityMapper.mapFromEntityList(cachedVideoGames)))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
             emit(State.Error(exception))
@@ -89,7 +88,7 @@ constructor(
         emit(State.Loading)
         try {
             val cachedFavoriteVideoGames = videoGameDao.getFavoriteVideoGames()
-            emit(State.Success(roomMapper.mapFromEntityList(cachedFavoriteVideoGames)))
+            emit(State.Success(videoGameEntityMapper.mapFromEntityList(cachedFavoriteVideoGames)))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
             emit(State.Error(exception))
@@ -100,10 +99,10 @@ constructor(
         try {
             val selectedCachedVideoGame = videoGameDao.getVideoGameById(id)
 
-            val selectedVideoGame = roomMapper.mapFromEntity(selectedCachedVideoGame)
+            val selectedVideoGame = videoGameEntityMapper.mapToDomainModel(selectedCachedVideoGame)
             selectedVideoGame.isFavorite = favorite
 
-            val updatedRowsCount = videoGameDao.update(roomMapper.mapToEntity(selectedVideoGame))
+            val updatedRowsCount = videoGameDao.update(videoGameEntityMapper.mapFromDomainModel(selectedVideoGame))
             Log.d(Constants.TAG, "getVideoGameById: updated rows = $updatedRowsCount")
             emit(State.Success(updatedRowsCount > 0))
         } catch (exception: Exception) {

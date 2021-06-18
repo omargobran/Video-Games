@@ -14,7 +14,7 @@ import com.dgpays.videogames.R
 import com.dgpays.videogames.databinding.ContentLayoutBinding
 import com.dgpays.videogames.databinding.ListItemBinding
 import com.dgpays.videogames.databinding.PagerItemBinding
-import com.dgpays.videogames.model.VideoGame
+import com.dgpays.videogames.domain.model.VideoGame
 import com.dgpays.videogames.ui.adapter.VideoGameAdapter
 import com.dgpays.videogames.ui.adapter.VideoGamePagerAdapter
 import com.dgpays.videogames.ui.callback.FilterErrorCallback

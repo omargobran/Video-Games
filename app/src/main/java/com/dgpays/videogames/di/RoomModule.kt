@@ -2,9 +2,9 @@ package com.dgpays.videogames.di
 
 import android.content.Context
 import androidx.room.Room
-import com.dgpays.videogames.room.RoomMapper
-import com.dgpays.videogames.room.VideoGameDao
-import com.dgpays.videogames.room.VideoGameDatabase
+import com.dgpays.videogames.cache.VideoGameEntityMapper
+import com.dgpays.videogames.cache.VideoGameDao
+import com.dgpays.videogames.cache.VideoGameDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,8 +35,8 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideRoomMapper(): RoomMapper {
-        return RoomMapper()
+    fun provideRoomMapper(): VideoGameEntityMapper {
+        return VideoGameEntityMapper()
     }
 
 }

@@ -2,9 +2,9 @@ package com.dgpays.videogames.di
 
 import android.util.Log
 import com.dgpays.videogames.BuildConfig
-import com.dgpays.videogames.retrofit.ResponseResultMapper
-import com.dgpays.videogames.retrofit.VideoGameRetrofit
-import com.dgpays.videogames.retrofit.entity.GameDescriptionMapper
+import com.dgpays.videogames.network.util.ResponseResultMapper
+import com.dgpays.videogames.network.VideoGameRetrofit
+import com.dgpays.videogames.network.util.VideoGameDtoMapper
 import com.dgpays.videogames.util.Constants
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -79,8 +79,8 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideGameDescriptionMapper(): GameDescriptionMapper {
-        return GameDescriptionMapper()
+    fun provideGameDescriptionMapper(): VideoGameDtoMapper {
+        return VideoGameDtoMapper()
     }
 
 }

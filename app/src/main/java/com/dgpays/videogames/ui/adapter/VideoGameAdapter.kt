@@ -6,7 +6,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.dgpays.videogames.databinding.ListItemBinding
-import com.dgpays.videogames.model.VideoGame
+import com.dgpays.videogames.domain.model.VideoGame
 import com.dgpays.videogames.ui.adapter.holder.VideoGameViewHolder
 import com.dgpays.videogames.ui.callback.FilterErrorCallback
 import com.dgpays.videogames.ui.callback.VideoGameCallback

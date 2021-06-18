@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.dgpays.videogames.databinding.DetailsFragmentBinding
-import com.dgpays.videogames.model.VideoGame
+import com.dgpays.videogames.domain.model.VideoGame
 import com.dgpays.videogames.ui.viewmodels.DetailsViewModel
 import com.dgpays.videogames.ui.viewmodels.MainViewModel
 import com.dgpays.videogames.util.State

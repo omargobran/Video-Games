@@ -1,11 +1,11 @@
 package com.dgpays.videogames.di
 
 import com.dgpays.videogames.repository.Repository
-import com.dgpays.videogames.retrofit.ResponseResultMapper
-import com.dgpays.videogames.retrofit.VideoGameRetrofit
-import com.dgpays.videogames.retrofit.entity.GameDescriptionMapper
-import com.dgpays.videogames.room.RoomMapper
-import com.dgpays.videogames.room.VideoGameDao
+import com.dgpays.videogames.network.util.ResponseResultMapper
+import com.dgpays.videogames.network.VideoGameRetrofit
+import com.dgpays.videogames.network.util.VideoGameDtoMapper
+import com.dgpays.videogames.cache.VideoGameEntityMapper
+import com.dgpays.videogames.cache.VideoGameDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,15 +19,15 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRepository(
-        roomMapper: RoomMapper,
-        gameDescriptionMapper: GameDescriptionMapper,
+        videoGameEntityMapper: VideoGameEntityMapper,
+        videoGameDtoMapper: VideoGameDtoMapper,
         responseResultMapper: ResponseResultMapper,
         videoGameDao: VideoGameDao,
         videoGameRetrofit: VideoGameRetrofit,
     ): Repository {
         return Repository(
-            roomMapper,
-            gameDescriptionMapper,
+            videoGameEntityMapper,
+            videoGameDtoMapper,
             responseResultMapper,
             videoGameDao,
             videoGameRetrofit
