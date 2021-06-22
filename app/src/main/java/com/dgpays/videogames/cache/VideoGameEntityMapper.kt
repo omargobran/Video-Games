@@ -32,11 +32,11 @@ class VideoGameEntityMapper: EntityMapper<VideoGameEntity, VideoGame> {
         )
     }
 
-    fun mapFromEntityList(videoGameEntities: List<VideoGameEntity>): List<VideoGame> {
+    fun mapToDomainList(videoGameEntities: List<VideoGameEntity>): List<VideoGame> {
         return videoGameEntities.map { mapToDomainModel(it) }
     }
 
-    fun mapToEntityList(videoGames: List<VideoGame>): List<VideoGameEntity> {
+    fun mapFromDomainList(videoGames: List<VideoGame>): List<VideoGameEntity> {
         return videoGames.map { mapFromDomainModel(it) }
     }
 }

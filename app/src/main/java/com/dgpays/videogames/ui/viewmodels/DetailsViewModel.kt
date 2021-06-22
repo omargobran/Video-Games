@@ -21,8 +21,7 @@ class DetailsViewModel @ViewModelInject constructor(
     val videoGameDescriptionLiveData: LiveData<State<VideoGame>>
         get() = _videoGameDescriptionLiveData
 
-
-    var videoGame: VideoGame? = null
+    var videoGame: VideoGame = VideoGame()
 
     fun setStateEvent(event: Event) {
         viewModelScope.launch {

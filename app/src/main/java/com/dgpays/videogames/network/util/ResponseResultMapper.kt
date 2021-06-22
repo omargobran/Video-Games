@@ -30,7 +30,7 @@ class ResponseResultMapper : EntityMapper<ResponseResult, VideoGame> {
         )
     }
 
-    fun mapFromEntityList(responseResults: List<ResponseResult>): List<VideoGame> {
+    fun mapToDomainList(responseResults: List<ResponseResult>): List<VideoGame> {
          return responseResults.map { mapToDomainModel(it) }
     }
 }

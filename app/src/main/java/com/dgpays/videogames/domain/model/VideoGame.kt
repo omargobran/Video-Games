@@ -10,5 +10,16 @@ data class VideoGame(
     var metaCriticRate: Int,
     var releaseDate: String,
     var image: String,
-    var isFavorite: Boolean
-) : Serializable
+    var isFavorite: Boolean,
+) : Serializable {
+    constructor() : this(
+        -1,
+        "",
+        "",
+        0.0,
+        -1,
+        "",
+        "",
+        true
+    )
+}

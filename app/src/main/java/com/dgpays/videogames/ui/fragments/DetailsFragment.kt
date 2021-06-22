@@ -21,7 +21,6 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var binding: DetailsFragmentBinding
-    private lateinit var game: VideoGame
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,11 +28,11 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
     ): View {
         binding = DetailsFragmentBinding.inflate(layoutInflater, container, false)
 
-        game = DetailsFragmentArgs.fromBundle(requireArguments()).videoGame
+        viewModel.videoGame = DetailsFragmentArgs.fromBundle(requireArguments()).videoGame
 
-        ViewCompat.setTransitionName(binding.title, "title_${game.id}")
-        ViewCompat.setTransitionName(binding.releaseDate, "release_date_${game.id}")
-        ViewCompat.setTransitionName(binding.videoGameImage, "image_${game.id}")
+        ViewCompat.setTransitionName(binding.title, "title_${viewModel.videoGame.id}")
+        ViewCompat.setTransitionName(binding.releaseDate, "release_date_${viewModel.videoGame.id}")
+        ViewCompat.setTransitionName(binding.videoGameImage, "image_${viewModel.videoGame.id}")
 
         return binding.root
     }
@@ -44,7 +43,7 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
         binding.apply {
             desc.movementMethod = ScrollingMovementMethod()
             onClickListener = this@DetailsFragment
-            videoGame = game
+            videoGame = viewModel.videoGame
             executePendingBindings()
         }
 
@@ -52,7 +51,7 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
             when (it) {
                 is State.Success<VideoGame> -> {
                     progress.hideProgress()
-                    game = it.data
+                    viewModel.videoGame = it.data
                     viewModel.videoGame = it.data
                     binding.videoGame = it.data
                 }
@@ -66,27 +65,22 @@ class DetailsFragment : BaseFragment(), View.OnClickListener {
             }
         })
 
-        // ilk acildiginda set edilsin sonra viewModel deki deger kontrol edilecek
-        if (viewModel.videoGame == null) {
-            viewModel.videoGame = game
-        }
-
-        if (viewModel.videoGame!!.description.isEmpty()) {
-            viewModel.setStateEvent(DetailsViewModel.Event.GetGameDescription(game.id))
+        if (viewModel.videoGame.description.isEmpty()) {
+            viewModel.setStateEvent(DetailsViewModel.Event.GetGameDescription(viewModel.videoGame.id))
         }
     }
 
     override fun onClick(view: View?) {
         if (view == binding.favoriteButton) {
             // change value of variable
-            game.isFavorite = !game.isFavorite
+            viewModel.videoGame.isFavorite = !viewModel.videoGame.isFavorite
 
             // update image and db
-            MainViewModel.setFavorite(binding.favoriteButton, game.isFavorite)
+            MainViewModel.setFavorite(binding.favoriteButton, viewModel.videoGame.isFavorite)
             viewModel.setStateEvent(
                 DetailsViewModel.Event.MakeGameFavorite(
-                    game.id,
-                    game.isFavorite
+                    viewModel.videoGame.id,
+                    viewModel.videoGame.isFavorite
                 )
             )
         }

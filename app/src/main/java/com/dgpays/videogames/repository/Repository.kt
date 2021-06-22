@@ -11,13 +11,8 @@ import com.dgpays.videogames.util.Constants
 import com.dgpays.videogames.util.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class Repository
-@Inject
-constructor(
+class Repository(
     private val videoGameEntityMapper: VideoGameEntityMapper,
     private val videoGameDtoMapper: VideoGameDtoMapper,
     private val responseResultMapper: ResponseResultMapper,
@@ -30,7 +25,7 @@ constructor(
             val oldCachedVideoGames = videoGameDao.getVideoGames()
 
             val networkVideoGames = videoGameRetrofit.getVideoGames()
-            val videoGames = responseResultMapper.mapFromEntityList(networkVideoGames.results)
+            val videoGames = responseResultMapper.mapToDomainList(networkVideoGames.results)
 
             videoGames.map { newVideoGame ->
                 oldCachedVideoGames.map { oldVideoGame ->
@@ -40,10 +35,10 @@ constructor(
                 }
             }
 
-            videoGameDao.insertVideoGames(videoGameEntityMapper.mapToEntityList(videoGames))
+            videoGameDao.insertVideoGames(videoGameEntityMapper.mapFromDomainList(videoGames))
             val cachedVideoGames = videoGameDao.getVideoGames()
 
-            emit(State.Success(videoGameEntityMapper.mapFromEntityList(cachedVideoGames)))
+            emit(State.Success(videoGameEntityMapper.mapToDomainList(cachedVideoGames)))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
             emit(State.Error(exception))
@@ -77,7 +72,7 @@ constructor(
         emit(State.Loading)
         try {
             val cachedVideoGames = videoGameDao.getVideoGames()
-            emit(State.Success(videoGameEntityMapper.mapFromEntityList(cachedVideoGames)))
+            emit(State.Success(videoGameEntityMapper.mapToDomainList(cachedVideoGames)))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
             emit(State.Error(exception))
@@ -88,7 +83,7 @@ constructor(
         emit(State.Loading)
         try {
             val cachedFavoriteVideoGames = videoGameDao.getFavoriteVideoGames()
-            emit(State.Success(videoGameEntityMapper.mapFromEntityList(cachedFavoriteVideoGames)))
+            emit(State.Success(videoGameEntityMapper.mapToDomainList(cachedFavoriteVideoGames)))
         } catch (exception: Exception) {
             Log.d(Constants.TAG, "getVideoGames: Exception : " + exception.message, exception)
             emit(State.Error(exception))
@@ -102,7 +97,8 @@ constructor(
             val selectedVideoGame = videoGameEntityMapper.mapToDomainModel(selectedCachedVideoGame)
             selectedVideoGame.isFavorite = favorite
 
-            val updatedRowsCount = videoGameDao.update(videoGameEntityMapper.mapFromDomainModel(selectedVideoGame))
+            val updatedRowsCount =
+                videoGameDao.update(videoGameEntityMapper.mapFromDomainModel(selectedVideoGame))
             Log.d(Constants.TAG, "getVideoGameById: updated rows = $updatedRowsCount")
             emit(State.Success(updatedRowsCount > 0))
         } catch (exception: Exception) {
